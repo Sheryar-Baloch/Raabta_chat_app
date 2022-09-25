@@ -19,46 +19,41 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
-  String email = '';
-  String password = '';
+  String email = "";
+  String password = "";
   bool _isLoading = false;
   AuthService authService = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor,
-                ),
-              )
-            : SingleChildScrollView(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
-                  child: Form(
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+                child: Form(
                     key: formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Raabta',
+                      children: <Widget>[
+                        const Text(
+                          "Groupie",
                           style: TextStyle(
                               fontSize: 40, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Login now to see what\'s happening ',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w400),
-                        ),
-                        Image.asset('assets/login.jpg'),
+                        const SizedBox(height: 10),
+                        const Text("Login now to see what they are talking!",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w400)),
+                        Image.asset("assets/login.png"),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
-                              labelText: 'Email',
+                              labelText: "Email",
                               prefixIcon: Icon(
                                 Icons.email,
                                 color: Theme.of(context).primaryColor,
@@ -68,26 +63,28 @@ class _LoginPageState extends State<LoginPage> {
                               email = val;
                             });
                           },
+
+                          // check tha validation
                           validator: (val) {
                             return RegExp(
                                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                     .hasMatch(val!)
                                 ? null
-                                : 'Please Enter Valid Value';
+                                : "Please enter a valid email";
                           },
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         TextFormField(
                           obscureText: true,
                           decoration: textInputDecoration.copyWith(
-                              labelText: 'Password',
+                              labelText: "Password",
                               prefixIcon: Icon(
                                 Icons.lock,
                                 color: Theme.of(context).primaryColor,
                               )),
                           validator: (val) {
                             if (val!.length < 6) {
-                              return 'Password must be 6 characters';
+                              return "Password must be at least 6 characters";
                             } else {
                               return null;
                             }
@@ -98,7 +95,9 @@ class _LoginPageState extends State<LoginPage> {
                             });
                           },
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
@@ -107,8 +106,8 @@ class _LoginPageState extends State<LoginPage> {
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30))),
-                            child: Text(
-                              'Sign In',
+                            child: const Text(
+                              "Sign In",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16),
                             ),
@@ -117,26 +116,30 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Text.rich(TextSpan(
-                            text: 'Don\'t have an account ?',
-                            style: TextStyle(color: Colors.black, fontSize: 14),
-                            children: [
-                              TextSpan(
-                                  text: 'Register Here',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      decoration: TextDecoration.underline),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      nextScreen(context, RegisterPage());
-                                    })
-                            ]))
+                          text: "Don't have an account? ",
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 14),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: "Register here",
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    decoration: TextDecoration.underline),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    nextScreen(context, const RegisterPage());
+                                  }),
+                          ],
+                        )),
                       ],
-                    ),
-                  ),
-                ),
-              ));
+                    )),
+              ),
+            ),
+    );
   }
 
   login() async {
@@ -145,16 +148,17 @@ class _LoginPageState extends State<LoginPage> {
         _isLoading = true;
       });
       await authService
-          .loginwithUserNameandPassword(email, password)
+          .loginWithUserNameandPassword(email, password)
           .then((value) async {
         if (value == true) {
           QuerySnapshot snapshot =
               await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
                   .gettingUserData(email);
-          await HelperFuncations.saveUserLoggedInStatus(true);
-          await HelperFuncations.saveUserEmailSF(email);
-          await HelperFuncations.saveUserNameSF(snapshot.docs[0]['fullName']);
-          nextScreenReplace(context, HomePage());
+          // saving the values to our shared preferences
+          await HelperFunctions.saveUserLoggedInStatus(true);
+          await HelperFunctions.saveUserEmailSF(email);
+          await HelperFunctions.saveUserNameSF(snapshot.docs[0]['fullName']);
+          nextScreenReplace(context, const HomePage());
         } else {
           showSnackbar(context, Colors.red, value);
           setState(() {

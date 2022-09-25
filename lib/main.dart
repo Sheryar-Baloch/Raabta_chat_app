@@ -13,10 +13,10 @@ void main() async {
   if (kIsWeb) {
     await Firebase.initializeApp(
         options: FirebaseOptions(
-            apiKey: constant.apiKey,
-            appId: constant.appId,
-            messagingSenderId: constant.messagingSenderId,
-            projectId: constant.projectId));
+            apiKey: Constants.apiKey,
+            appId: Constants.appId,
+            messagingSenderId: Constants.messagingSenderId,
+            projectId: Constants.projectId));
   } else {
     await Firebase.initializeApp();
   }
@@ -33,15 +33,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isSignedIn = false;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getUserLoggedInStatus();
   }
 
   getUserLoggedInStatus() async {
-    await HelperFuncations.getUserLoggedInStatus().then((value) {
+    await HelperFunctions.getUserLoggedInStatus().then((value) {
       if (value != null) {
         setState(() {
           _isSignedIn = value;
@@ -53,13 +53,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: constant().primaryColor,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      home: _isSignedIn ? HomePage() : LoginPage(),
+          primaryColor: Constants().primaryColor,
+          scaffoldBackgroundColor: Colors.white),
+      debugShowCheckedModeBanner: false,
+      home: _isSignedIn ? const HomePage() : const LoginPage(),
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-class constant {
-  static String appId = '1:136505093353:web:b48903227236612488d478';
-  static String apiKey = 'AIzaSyCRQPu8oFZ_DyV7ti5SpUL2ONhjPVBJ5Ic';
-  static String messagingSenderId = '136505093353';
-  static String projectId = 'chaitappflutter';
-  final primaryColor = Color.fromARGB(231, 75, 209, 239);
+class Constants {
+  static String appId = "1:634480644405:web:5549258ea987afaefb7c7c";
+  static String apiKey = "AIzaSyADZ6Uq-pFQIWMdkGeh7JIozEY7jJM6r_I";
+  static String messagingSenderId = "634480644405";
+  static String projectId = "chatappflutter-13318";
+  final primaryColor = const Color.fromARGB(231, 75, 209, 239);
 }

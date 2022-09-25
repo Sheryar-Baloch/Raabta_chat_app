@@ -21,9 +21,9 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  Stream<QuerySnapshot>? chat;
+  Stream<QuerySnapshot>? chats;
   TextEditingController messageController = TextEditingController();
-  String admin = '';
+  String admin = "";
 
   @override
   void initState() {
@@ -32,12 +32,12 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   getChatandAdmin() {
-    DatabaseService(uid: null).getChats(widget.groupId).then((val) {
+    DatabaseService().getChats(widget.groupId).then((val) {
       setState(() {
-        chat = val;
+        chats = val;
       });
     });
-    DatabaseService(uid: null).getGroupAdmin(widget.groupId).then((val) {
+    DatabaseService().getGroupAdmin(widget.groupId).then((val) {
       setState(() {
         admin = val;
       });
@@ -50,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        title: Text(widget.userName),
+        title: Text(widget.groupName),
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
@@ -63,53 +63,53 @@ class _ChatPageState extends State<ChatPage> {
                       adminName: admin,
                     ));
               },
-              icon: Icon(Icons.info))
+              icon: const Icon(Icons.info))
         ],
       ),
       body: Stack(
-        children: [
+        children: <Widget>[
+          // chat messages here
           chatMessages(),
           Container(
             alignment: Alignment.bottomCenter,
             width: MediaQuery.of(context).size.width,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
               width: MediaQuery.of(context).size.width,
               color: Colors.grey[700],
-              child: Row(
-                children: [
-                  Expanded(
-                      child: TextFormField(
-                    controller: messageController,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: 'Send a message....',
-                      hintStyle: TextStyle(color: Colors.white, fontSize: 16),
-                      border: InputBorder.none,
-                    ),
-                  )),
-                  SizedBox(width: 12),
-                  GestureDetector(
-                    onTap: () {
-                      sendMessage();
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+              child: Row(children: [
+                Expanded(
+                    child: TextFormField(
+                  controller: messageController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    hintText: "Send a message...",
+                    hintStyle: TextStyle(color: Colors.white, fontSize: 16),
+                    border: InputBorder.none,
                   ),
-                ],
-              ),
+                )),
+                const SizedBox(
+                  width: 12,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    sendMessage();
+                  },
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: const Center(
+                        child: Icon(
+                      Icons.send,
+                      color: Colors.white,
+                    )),
+                  ),
+                )
+              ]),
             ),
           )
         ],
@@ -119,7 +119,7 @@ class _ChatPageState extends State<ChatPage> {
 
   chatMessages() {
     return StreamBuilder(
-      stream: chat,
+      stream: chats,
       builder: (context, AsyncSnapshot snapshot) {
         return snapshot.hasData
             ? ListView.builder(
@@ -140,11 +140,12 @@ class _ChatPageState extends State<ChatPage> {
   sendMessage() {
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
-        'message': messageController.text,
-        'sender': widget.userName,
-        'time': DateTime.now().microsecondsSinceEpoch,
+        "message": messageController.text,
+        "sender": widget.userName,
+        "time": DateTime.now().millisecondsSinceEpoch,
       };
-      DatabaseService(uid: null).sendMessage(widget.groupId, chatMessageMap);
+
+      DatabaseService().sendMessage(widget.groupId, chatMessageMap);
       setState(() {
         messageController.clear();
       });
