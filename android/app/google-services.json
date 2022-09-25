@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "136505093353",
+    "project_id": "chaitappflutter",
+    "storage_bucket": "chaitappflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136505093353:android:ba7a0dd64aa896e388d478",
+        "android_client_info": {
+          "package_name": "com.example.firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "136505093353-mb93a10gthn816g9oq80s1tt6mbn5h9h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebase",
+            "certificate_hash": "21718c5c16f5298fb3b279f3e4b10a64d86dad26"
+          }
+        },
+        {
+          "client_id": "136505093353-2k3kd167asfu6avmlofmpflbg1preu9j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvloZu0Cuts_baOb7egSswRZ7WisymqjY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136505093353-2k3kd167asfu6avmlofmpflbg1preu9j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
